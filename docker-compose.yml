@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    image: contact-nginx
+    container_name: contact-nginx
+    restart: unless-stopped
+    # environment:
+    #   - SERVER_NAME=${SERVER_NAME}
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./app:/usr/share/nginx/html:rw
+      - ./script.sh:/usr/share/nginx/html/script.sh:rw
+    # command: ./usr/share/nginx/html/script.sh   
+    # networks:
+    #   - app_network
+    deploy:
+      resources:
+        limits:
+          memory: 4096M
